@@ -1,0 +1,39 @@
+{
+  "name": "todolist",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "NODE_ENV=testing node_modules/.bin/istanbul cover node_modules/.bin/tape ./test/**/*.spec.js | node_modules/.bin/tap-spec && node_modules/.bin/istanbul report clover",
+    "watch": "nodemon -q -x 'npm test'"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "body-parser": "~1.15.2",
+    "bookshelf": "^0.10.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "dotenv": "^2.0.0",
+    "express": "~4.14.0",
+    "express-handlebars": "^3.0.0",
+    "hbs": "~4.0.1",
+    "knex": "^0.12.6",
+    "moment": "^2.17.1",
+    "morgan": "~1.7.0",
+    "mysql": "^2.12.0",
+    "serve-favicon": "~2.3.0",
+    "sqlite3": "^3.1.8"
+  },
+  "devDependencies": {
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "faucet": "0.0.1",
+    "istanbul": "^0.4.5",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.6",
+    "supertest": "^2.0.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
+  }
+}
