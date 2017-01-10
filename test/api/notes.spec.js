@@ -11,6 +11,11 @@ test('NotesApi.createNote', t => {
     '../lib/notes': {create: create}
   });
 
+  let toJson = sinon.spy();
+  let statusObj = {
+    json: toJson
+  };
+  let status = sinon.stub().returns(statusObj);
   let req = {
     body: {
       title: 'Test',
@@ -19,38 +24,50 @@ test('NotesApi.createNote', t => {
   };
 
   let res = {
-    status: function () {
-      return {
-        json: function () {}
-      };
-    }
+    status: status
   };
   NotesApi.createNote(req, res);
 
   t.equal(create.callCount, 1, 'should call create function of NotesLib');
-  t.end();
+  setTimeout(() => {
+    t.ok(toJson.calledOnce, 'should return json');
+    t.end();
+  }, 300);
 });
 
-// test('updateNote function in api should call update function of note service', t => {
-//   let update = sinon.spy();
-//   let NotesApi = proxyquire('../../api/notes', {
-//     '../services/notes': {update: update}
-//   });
+test('NotesApi.updateNote', t => {
+  let update = sinon.stub().returns(Promise.resolve());
+  let getNoteById = sinon.stub().returns(Promise.resolve());
+  let NotesApi = proxyquire('../../api/notes', {
+    '../lib/notes': {getNoteById: getNoteById, update: update}
+  });
 
-//   let req = {
-//     body: {
-//       id: 1,
-//       title: 'Test',
-//       body: 'test'
-//     }
-//   };
+  let req = {
+    body: {
+      id: 1,
+      title: 'Test',
+      body: 'test'
+    }
+  };
 
-//   let res = {};
-//   NotesApi.updateNote(req, res);
+  let toJson = sinon.spy();
+  let statusObj = {
+    json: toJson
+  };
+  let status = sinon.stub().returns(statusObj);
 
-//   t.equal(update.callCount, 1);
-//   t.end();
-// });
+  let res = {
+    status: status
+  };
+
+  NotesApi.updateNote(req, res);
+  setTimeout(() => {
+    t.equal(update.callCount, 1, 'should call update function');
+    t.equal(getNoteById.callCount, 1, 'should call getNoteById of NotesLib');
+    t.ok(toJson.calledOnce, 'should return json');
+    t.end();
+  }, 300);
+});
 
 // test('deleteNote function in api should call delete function of note service', t => {
 //   let del = sinon.spy();

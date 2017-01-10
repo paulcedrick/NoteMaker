@@ -28,14 +28,19 @@ module.exports = {
       body
     };
 
-    NotesLib.update(params)
+    NotesLib.getNoteById(id)
     .then(note => {
-      res.status(201).json(note.toJSON());
+      NotesLib.update(note, params)
+      .then(note => {
+        res.status(201).json(note.toJSON());
+      })
+      .catch(err => {
+        res.status(err.errorNo).json(err);
+      });
     })
     .catch(err => {
       res.status(err.errorNo).json(err);
-    });
-        
+    }); 
   },
   deleteNote: (req, res) => {
     let id = req.body.id;
