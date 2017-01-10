@@ -3,26 +3,33 @@
 let test = require('tape');
 let sinon = require('sinon');
 let proxyquire = require('proxyquire');
+let Promise = require('bluebird');
 
-// test('createNote function in api should call create function of note service', t => {
-//   let create = sinon.spy();
-//   let NotesApi = proxyquire('../../api/notes', {
-//     '../services/notes': {create: create}
-//   });
+test('NotesApi.createNote', t => {
+  let create = sinon.stub().returns(Promise.resolve());
+  let NotesApi = proxyquire('../../api/notes', {
+    '../lib/notes': {create: create}
+  });
 
-//   let req = {
-//     body: {
-//       title: 'Test',
-//       body: 'test',
-//     }
-//   };
+  let req = {
+    body: {
+      title: 'Test',
+      body: 'test',
+    }
+  };
 
-//   let res = {};
-//   NotesApi.createNote(req, res);
+  let res = {
+    status: function () {
+      return {
+        json: function () {}
+      };
+    }
+  };
+  NotesApi.createNote(req, res);
 
-//   t.equal(create.callCount, 1);
-//   t.end();
-// });
+  t.equal(create.callCount, 1, 'should call create function of NotesLib');
+  t.end();
+});
 
 // test('updateNote function in api should call update function of note service', t => {
 //   let update = sinon.spy();
