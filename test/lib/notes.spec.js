@@ -77,3 +77,22 @@ test('NotesLib.update', t => {
     t.end();
   });
 });
+
+test('NotesLib.delete', t => {
+  
+  let fakenote = {};
+  fakenote.destroy = sinon.spy();
+
+  t.ok(NotesLib.hasOwnProperty('delete'), 'should exist');
+
+  NotesLib.delete(fakenote);
+  t.ok(fakenote.destroy.calledOnce, 'should call destory function of note object');
+
+  NotesLib.delete({})
+  .catch(err => {
+    t.ok(err.errorNo === 400, 'should not accept empty object');
+    t.end();  
+  });
+
+  
+});
